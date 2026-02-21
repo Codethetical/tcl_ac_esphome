@@ -48,7 +48,7 @@ void TCLClimate::set_mode(climate::ClimateMode mode) {
     case climate::CLIMATE_MODE_AUTO: mode_str = "AUTO"; break;
     default: mode_str = "UNKNOWN"; break;
   }
-  ESP_LOGI("TCL", "Climate mode changed to: %s", mode_str);
+  ESP_LOGI("TCL", "Climate mode changed to: %s", mode_str); // JB: Here is the log statement for mode change
   this->is_changed = true;
   this->mode = mode;
 }
@@ -110,13 +110,14 @@ void TCLClimate::build_set_cmd(get_cmd_resp_t *get_cmd_resp) {
         0x00, // 0x00 - unused
         0x03, // 0x01 -> 0x03
         0x02, // 0x02 -> 0x02 (fan only)
-        0x07, // 0x03 -> 0x07 (dry)
+        0x07, // 0x03 -> 0x07 (dry)  JB: I think this is the problem. Should be 0x05 based on log output from remote??
         0x01, // 0x04 -> 0x01 (heat)
         0x08  // 0x05 -> 0x08 (auto)
     };
     
     if (get_cmd_resp->data.mode < sizeof(MODE_MAP)) {
         m_set_cmd.data.mode = MODE_MAP[get_cmd_resp->data.mode];
+        ESP_LOGD("TCL", "Mode mapped from 0x%02X to 0x%02X", get_cmd_resp->data.mode, m_set_cmd.data.mode);
     }
 
     // Temperature conversion
@@ -237,7 +238,7 @@ void TCLClimate::control(const climate::ClimateCall &call) {
             get_cmd_resp.data.power = 0x01;
             switch (climate_mode) {
                 case climate::CLIMATE_MODE_COOL:    get_cmd_resp.data.mode = 0x01; break;
-                case climate::CLIMATE_MODE_DRY:     get_cmd_resp.data.mode = 0x03; break;
+                case climate::CLIMATE_MODE_DRY:     get_cmd_resp.data.mode = 0x03; break;  // JB: Here we use 0x03 for DRY mode based on previous mapping
                 case climate::CLIMATE_MODE_FAN_ONLY:get_cmd_resp.data.mode = 0x02; break;
                 case climate::CLIMATE_MODE_HEAT:
                 case climate::CLIMATE_MODE_HEAT_COOL:get_cmd_resp.data.mode = 0x04; break;
