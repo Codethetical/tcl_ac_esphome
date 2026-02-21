@@ -110,7 +110,8 @@ void TCLClimate::build_set_cmd(get_cmd_resp_t *get_cmd_resp) {
         0x00, // 0x00 - unused
         0x03, // 0x01 -> 0x03
         0x02, // 0x02 -> 0x02 (fan only)
-        0x07, // 0x03 -> 0x07 (dry)  JB: I think this is the problem. Should be 0x05 based on log output from remote??
+        //0x07, // 0x03 -> 0x07 (dry)  JB: I think this is the problem. Should be 0x05 based on log output from remote??
+        0x05, // 0x03 -> 0x05 (dry)  JB: I think this is the problem. Should be 0x05 based on log output from remote??
         0x01, // 0x04 -> 0x01 (heat)
         0x08  // 0x05 -> 0x08 (auto)
     };
