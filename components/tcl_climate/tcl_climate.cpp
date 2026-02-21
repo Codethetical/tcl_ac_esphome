@@ -109,8 +109,8 @@ void TCLClimate::build_set_cmd(get_cmd_resp_t *get_cmd_resp) {
     static constexpr uint8_t MODE_MAP[] = {
         0x00, // 0x00 - unused
         0x03, // 0x01 -> 0x03
-        0x02, // 0x02 -> 0x02 (fan only)
-        0x07, // 0x03 -> 0x07 (dry)  JB: I think this is the problem. Should be 0x05 based on log output from remote??
+        0x07, // 0x02 -> 0x02 (fan only)
+        0x02, // 0x03 -> 0x07 (dry)  JB: I think this is the problem. Should be 0x05 based on log output from remote??
         //0x05, // 0x03 -> 0x05 (dry)  JB: I think this is the problem. Should be 0x05 based on log output from remote??
         0x01, // 0x04 -> 0x01 (heat)
         0x08  // 0x05 -> 0x08 (auto)
@@ -239,8 +239,8 @@ void TCLClimate::control(const climate::ClimateCall &call) {
             get_cmd_resp.data.power = 0x01;
             switch (climate_mode) {
                 case climate::CLIMATE_MODE_COOL:    get_cmd_resp.data.mode = 0x01; break;
-                case climate::CLIMATE_MODE_DRY:     get_cmd_resp.data.mode = 0x02; break;  // JB: Here we use 0x03 for DRY mode based on previous mapping
-                case climate::CLIMATE_MODE_FAN_ONLY:get_cmd_resp.data.mode = 0x03; break;  // JB: Swapping with fan mode here.
+                case climate::CLIMATE_MODE_DRY:     get_cmd_resp.data.mode = 0x03; break;  // JB: Here we use 0x03 for DRY mode based on previous mapping
+                case climate::CLIMATE_MODE_FAN_ONLY:get_cmd_resp.data.mode = 0x02; break;  // JB: Swapping with fan mode here.
                 case climate::CLIMATE_MODE_HEAT:
                 case climate::CLIMATE_MODE_HEAT_COOL:get_cmd_resp.data.mode = 0x04; break;
                 case climate::CLIMATE_MODE_AUTO:    get_cmd_resp.data.mode = 0x05; break;
